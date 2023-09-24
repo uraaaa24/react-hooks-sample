@@ -1,6 +1,6 @@
 import { Box, Button, Divider, List, ListItem, TextField, Typography } from '@mui/material'
 
-import { useContext, useEffect, useReducer, useRef, useState } from 'react'
+import { useContext, useEffect, useMemo, useReducer, useRef, useState } from 'react'
 import './App.css'
 import { UserInfoContext } from './main'
 
@@ -34,6 +34,25 @@ function App() {
     console.log(ref.current.value)
   }
 
+  // useMemo
+  const [count01, setCount01] = useState<number>(0)
+  const [count02, setCount02] = useState<number>(0)
+  // const square = () => {
+  //   let i = 0
+  //   while (i < 2000000000) {
+  //     i++
+  //   }
+  //   return count02 * count02
+  // }
+  const square = useMemo(() => {
+    let i = 0
+    while (i < 2000000000) {
+      i++
+    }
+    console.log('クリックされました')
+    return count02 * count02
+  }, [count02])
+
   return (
     <>
       <List>
@@ -60,6 +79,7 @@ function App() {
             UseRef
           </Button>
         </ListItem>
+        <Divider />
 
         <ListItem sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
           <Typography variant="h3">useReducer</Typography>
@@ -72,6 +92,24 @@ function App() {
               -
             </Button>
           </Box>
+        </ListItem>
+        <Divider />
+
+        <ListItem sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+          <Typography variant="h3">useMemo</Typography>
+          <Box display="flex" sx={{ gap: 2, alignItems: 'center' }}>
+            <Typography variant="body1">カウント１：{count01}</Typography>
+            <Button variant="outlined" onClick={() => setCount01(count01 + 1)}>
+              +
+            </Button>
+          </Box>
+          <Box display="flex" sx={{ gap: 2, alignItems: 'center' }}>
+            <Typography variant="body1">カウント２：{count02}</Typography>
+            <Button variant="outlined" onClick={() => setCount02(count02 + 1)}>
+              +
+            </Button>
+          </Box>
+          <Typography variant="body1">結果：{square}</Typography>
         </ListItem>
 
         <Divider />
