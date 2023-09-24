@@ -1,13 +1,25 @@
-import { Button, Divider, List, ListItem, TextField, Typography } from '@mui/material'
+import { Box, Button, Divider, List, ListItem, TextField, Typography } from '@mui/material'
 
-import { useContext, useEffect, useRef, useState } from 'react'
+import { useContext, useEffect, useReducer, useRef, useState } from 'react'
 import './App.css'
 import { UserInfoContext } from './main'
+
+const reducer = (state: number, action: { type: string }) => {
+  switch (action.type) {
+    case 'increment':
+      return state + 1
+    case 'decrement':
+      return state - 1
+    default:
+      return state
+  }
+}
 
 function App() {
   const [count, setCount] = useState<number>(0)
   const userInfo = useContext(UserInfoContext)
   const ref = useRef<HTMLInputElement>()
+  const [state, dispatch] = useReducer(reducer, 0)
 
   const handleClick = () => {
     setCount(count + 1)
@@ -48,6 +60,20 @@ function App() {
             UseRef
           </Button>
         </ListItem>
+
+        <ListItem sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+          <Typography variant="h3">useReducer</Typography>
+          <Typography variant="body1">カウント：{state}</Typography>
+          <Box display="flex" sx={{ gap: 2 }}>
+            <Button variant="outlined" onClick={() => dispatch({ type: 'increment' })}>
+              +
+            </Button>
+            <Button variant="outlined" onClick={() => dispatch({ type: 'decrement' })}>
+              -
+            </Button>
+          </Box>
+        </ListItem>
+
         <Divider />
       </List>
     </>
