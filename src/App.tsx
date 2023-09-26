@@ -1,7 +1,8 @@
 import { Box, Button, Divider, List, ListItem, TextField, Typography } from '@mui/material'
 
-import { useContext, useEffect, useMemo, useReducer, useRef, useState } from 'react'
+import { useCallback, useContext, useEffect, useMemo, useReducer, useRef, useState } from 'react'
 import './App.css'
+import SomeChild from './components/SomeChild'
 import { UserInfoContext } from './main'
 
 const reducer = (state: number, action: { type: string }) => {
@@ -52,6 +53,17 @@ function App() {
     console.log('クリックされました')
     return count02 * count02
   }, [count02])
+
+  // useCallback 関数のメモ化（useMemoの関数バージョン）
+  const [counter, setCounter] = useState<number>(0)
+  // const showCount = () => {
+  //   alert('これは重い処理です')
+  // }
+  const showCount = useCallback(() => {
+    setCounter(counter + 1)
+    alert('これは重い処理です: ' + counter)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [counter])
 
   return (
     <>
@@ -111,7 +123,12 @@ function App() {
           </Box>
           <Typography variant="body1">結果：{square}</Typography>
         </ListItem>
+        <Divider />
 
+        <ListItem sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+          <Typography variant="h3">useCallback</Typography>
+          <SomeChild showCount={showCount} />
+        </ListItem>
         <Divider />
       </List>
     </>
