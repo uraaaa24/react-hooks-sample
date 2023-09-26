@@ -3,6 +3,7 @@ import { Box, Button, Divider, List, ListItem, TextField, Typography } from '@mu
 import { useCallback, useContext, useEffect, useMemo, useReducer, useRef, useState } from 'react'
 import './App.css'
 import SomeChild from './components/SomeChild'
+import useLocalStorage from './hooks/useLocalStorage'
 import { UserInfoContext } from './main'
 
 const reducer = (state: number, action: { type: string }) => {
@@ -64,6 +65,9 @@ function App() {
     alert('これは重い処理です: ' + counter)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [counter])
+
+  // カスタムフック
+  const [age, setAge] = useLocalStorage('age', 25)
 
   return (
     <>
@@ -128,6 +132,15 @@ function App() {
         <ListItem sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
           <Typography variant="h3">useCallback</Typography>
           <SomeChild showCount={showCount} />
+        </ListItem>
+        <Divider />
+
+        <ListItem sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+          <Typography variant="h3">customHook</Typography>
+          <Typography variant="body1">{age}歳</Typography>
+          <Button variant="outlined" onClick={() => setAge(80)}>
+            年齢を設定
+          </Button>
         </ListItem>
         <Divider />
       </List>
